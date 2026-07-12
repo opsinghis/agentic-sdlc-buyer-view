@@ -1,0 +1,1974 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agentic SDLC — Buyer View</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --surface: #ffffff;
+      --surface-2: #eef2f6;
+      --ink: #1d2430;
+      --muted: #5c6675;
+      --line: #d8dee8;
+      --nav: #111827;
+      --nav-2: #1f2937;
+      --blue: #2563eb;
+      --teal: #0f766e;
+      --amber: #b45309;
+      --red: #b42318;
+      --green: #166534;
+      --purple: #6d28d9;
+      --radius: 8px;
+      --shadow: 0 10px 28px rgba(17, 24, 39, 0.08);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.48;
+      letter-spacing: 0;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    .topbar {
+      background: var(--nav);
+      color: #fff;
+      border-bottom: 1px solid #000;
+    }
+
+    .topbar-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 18px 24px 14px;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    .brand-block {
+      min-width: 0;
+    }
+
+    .eyebrow {
+      color: #b9c4d6;
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin: 0 0 4px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.2;
+      font-weight: 760;
+    }
+
+    .subtitle {
+      margin: 6px 0 0;
+      color: #d4dbea;
+      max-width: 920px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .action-btn {
+      min-height: 38px;
+      border: 1px solid #3b4657;
+      background: var(--nav-2);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 8px 12px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .action-btn:hover,
+    .tab:hover {
+      border-color: #7b8798;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: thin;
+    }
+
+    .tab {
+      flex: 0 0 auto;
+      min-height: 40px;
+      border: 1px solid #3b4657;
+      background: var(--nav-2);
+      color: #e5e7eb;
+      border-radius: var(--radius);
+      padding: 9px 12px;
+      cursor: pointer;
+    }
+
+    .tab[aria-selected="true"] {
+      background: #fff;
+      color: var(--ink);
+      border-color: #fff;
+      font-weight: 700;
+    }
+
+    .main {
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+      overflow: hidden;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px 20px;
+      background: #fbfcfe;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: 19px;
+      line-height: 1.25;
+    }
+
+    .section-header p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      max-width: 980px;
+    }
+
+    .section-body {
+      padding: 20px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid.cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid.cols-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid.cols-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 15px;
+      min-width: 0;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      line-height: 1.28;
+    }
+
+    .card p {
+      margin: 0 0 10px;
+      color: var(--muted);
+    }
+
+    .card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 22px;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      color: #334155;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .tag.blue {
+      border-color: #bfdbfe;
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .tag.teal {
+      border-color: #99f6e4;
+      background: #f0fdfa;
+      color: #0f766e;
+    }
+
+    .tag.amber {
+      border-color: #fde68a;
+      background: #fffbeb;
+      color: #92400e;
+    }
+
+    .tag.red {
+      border-color: #fecaca;
+      background: #fef2f2;
+      color: #991b1b;
+    }
+
+    .tag.green {
+      border-color: #bbf7d0;
+      background: #f0fdf4;
+      color: #166534;
+    }
+
+    .tag.purple {
+      border-color: #ddd6fe;
+      background: #f5f3ff;
+      color: #6d28d9;
+    }
+
+    ul,
+    ol {
+      margin: 8px 0 0;
+      padding-left: 20px;
+    }
+
+    li {
+      margin: 6px 0;
+    }
+
+    .note {
+      border-left: 4px solid var(--teal);
+      background: #f0fdfa;
+      padding: 12px 14px;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      color: #134e4a;
+    }
+
+    .warning {
+      border-left-color: var(--amber);
+      background: #fffbeb;
+      color: #78350f;
+    }
+
+    .danger {
+      border-left-color: var(--red);
+      background: #fef2f2;
+      color: #7f1d1d;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 780px;
+    }
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: top;
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    th {
+      background: #f8fafc;
+      font-size: 13px;
+      text-transform: uppercase;
+      color: #475569;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .phase {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 14px;
+    }
+
+    .phase .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #075985;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .phase h3 {
+      margin: 0 0 6px;
+      font-size: 15px;
+    }
+
+    .phase p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .search-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .search-input {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 9px 12px;
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .qa-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    details.qa {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      overflow: hidden;
+    }
+
+    details.qa summary {
+      cursor: pointer;
+      padding: 13px 14px;
+      font-weight: 700;
+      list-style-position: inside;
+      background: #fbfcfe;
+    }
+
+    details.qa .answer {
+      padding: 0 14px 14px;
+      color: var(--muted);
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .kicker {
+      font-size: 13px;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-weight: 800;
+      margin: 0 0 8px;
+    }
+
+    .callout-band {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      border-radius: var(--radius);
+    }
+
+    .callout-band h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .callout-band p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .mini-heading {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin: 0 0 8px;
+    }
+
+    .stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      margin-right: 6px;
+      background: var(--teal);
+      vertical-align: middle;
+    }
+
+    .status-dot.amber {
+      background: var(--amber);
+    }
+
+    .status-dot.red {
+      background: var(--red);
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 18px 0 0;
+    }
+
+    /* ---- Diagram components (theme-consistent, print-safe) ---- */
+    .diagram {
+      margin-top: 16px;
+      padding: 16px 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fbfcfe;
+    }
+
+    .diagram + .diagram {
+      margin-top: 14px;
+    }
+
+    .dia-title {
+      margin: 0 0 14px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: var(--muted);
+    }
+
+    .dia-cap {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 12px 0 0;
+    }
+
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      gap: 8px;
+    }
+
+    .flow-node {
+      flex: 1 1 140px;
+      min-width: 0;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .flow-node b {
+      font-size: 14px;
+    }
+
+    .flow-node span {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+      display: block;
+    }
+
+    .flow-arrow {
+      flex: 0 0 auto;
+      align-self: center;
+      color: #94a3b8;
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .flow-node.n-blue { border-color: #bfdbfe; background: #eff6ff; }
+    .flow-node.n-teal { border-color: #99f6e4; background: #f0fdfa; }
+    .flow-node.n-amber { border-color: #fde68a; background: #fffbeb; }
+    .flow-node.n-green { border-color: #bbf7d0; background: #f0fdf4; }
+    .flow-node.n-purple { border-color: #ddd6fe; background: #f5f3ff; }
+    .flow-node.n-ink { border-color: #111827; background: #111827; color: #fff; }
+    .flow-node.n-ink b { color: #fff; }
+    .flow-node.n-ink span { color: #cbd5e1; }
+
+    .stack-diagram {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stack-layer {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 11px 14px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .stack-layer b { font-size: 14px; }
+    .stack-layer small { color: var(--muted); font-size: 12px; text-align: right; }
+
+    .boundary {
+      border: 2px dashed #94a3b8;
+      border-radius: 10px;
+      padding: 12px;
+      background: #fff;
+      flex: 2 1 240px;
+    }
+
+    .boundary .bl {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #64748b;
+      letter-spacing: 0.03em;
+      margin-bottom: 8px;
+    }
+
+    .matrix-axis-top,
+    .matrix-axis-bottom {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #64748b;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+
+    .matrix-axis-top { margin-bottom: 8px; }
+    .matrix-axis-bottom { margin-top: 8px; }
+
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .quad {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 12px;
+      min-height: 116px;
+    }
+
+    .quad h4 {
+      margin: 0 0 8px;
+      font-size: 13px;
+    }
+
+    .quad p { margin: 0; color: var(--muted); font-size: 13px; }
+
+    .quad.win {
+      border-color: #166534;
+      background: #f0fdf4;
+      box-shadow: inset 0 0 0 1px #166534;
+    }
+
+    .quad.win h4 { color: #166534; }
+
+    .bar {
+      display: flex;
+      height: 36px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+
+    .bar + .bar { margin-top: 8px; }
+
+    .bar > div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .seg-cost { background: #64748b; }
+    .seg-token { background: #b45309; }
+    .seg-margin { background: #166534; }
+
+    .bar-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 10px 0 4px;
+    }
+
+    .bar-legend {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .bar-legend i {
+      display: inline-block;
+      width: 11px;
+      height: 11px;
+      border-radius: 3px;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+
+    .calc-panel {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      align-items: end;
+    }
+
+    .calc-field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .calc-field input[type="number"] {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 9px 12px;
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .calc-field input[type="range"] {
+      width: 100%;
+      accent-color: var(--blue);
+    }
+
+    .calc-field .rangeval {
+      font-weight: 800;
+      color: var(--blue);
+    }
+
+    .metric.hero strong { color: var(--green); }
+    .metric.hero { border-color: #bbf7d0; background: #f0fdf4; }
+
+    @media (max-width: 720px) {
+      .calc-panel { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 720px) {
+      .flow { flex-direction: column; }
+      .flow-arrow { transform: rotate(90deg); align-self: center; }
+    }
+
+    @media (max-width: 1100px) {
+      .grid.cols-4,
+      .metric-row,
+      .timeline {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid.cols-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .split,
+      .callout-band {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .topbar-inner,
+      .main {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .brand-row,
+      .section-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .actions {
+        justify-content: flex-start;
+      }
+
+      .grid.cols-2,
+      .grid.cols-3,
+      .grid.cols-4,
+      .metric-row,
+      .timeline {
+        grid-template-columns: 1fr;
+      }
+
+      .section-body {
+        padding: 14px;
+      }
+
+      h1 {
+        font-size: 21px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .topbar {
+        background: #fff;
+        color: #111827;
+      }
+
+      .subtitle,
+      .eyebrow {
+        color: #374151;
+      }
+
+      .tabs,
+      .actions,
+      .search-row {
+        display: none;
+      }
+
+      .main {
+        max-width: none;
+        padding: 0;
+      }
+
+      .panel,
+      .panel.active {
+        display: block;
+        break-after: page;
+      }
+
+      .section {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+    }
+
+    /* Mobile refinements */
+    html, body { max-width: 100%; overflow-x: hidden; }
+    .table-wrap, .tabs { -webkit-overflow-scrolling: touch; }
+    .section, .diagram, .note, .callout-band { overflow-wrap: break-word; }
+    @media (max-width: 720px) {
+      body { font-size: 14px; }
+      .section-header h2 { font-size: 17px; }
+      .tabs { gap: 4px; }
+      .tab { padding: 9px 12px; font-size: 13px; white-space: nowrap; }
+      .table-wrap table { min-width: 560px; }
+      table { font-size: 13px; }
+    }
+    @media (max-width: 440px) {
+      .section-header h2 { font-size: 16px; }
+      .metric strong, #est-cost, #est-price, #est-profit, #est-savings { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand-row">
+          <div class="brand-block">
+            <p class="eyebrow">Commercial strategy workspace</p>
+            <h1>Agentic SDLC Lifecycle Tooling Offering</h1>
+            <p class="subtitle">A buyer-focused view: what it is, what it does, the delivery team model, answers to buyer questions, and a cost/price estimator.</p>
+          </div>
+          <div class="actions">
+            <button class="action-btn" type="button" onclick="window.print()">Print</button>
+            <button class="action-btn" type="button" id="expandQa">Expand Q&amp;A</button>
+          </div>
+        </div>
+        <nav class="tabs" role="tablist" aria-label="Offering strategy sections">
+          <button class="tab" role="tab" aria-selected="true" aria-controls="overview" id="tab-overview">Overview</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="capabilities" id="tab-capabilities">Capabilities</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="questions" id="tab-questions">Buyer Q&amp;A</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="team" id="tab-team">Team</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="estimator" id="tab-estimator">Estimator</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main">
+      <section id="overview" class="panel active" role="tabpanel" aria-labelledby="tab-overview">
+        <div class="section">
+          <div class="section-header">
+            <div>
+              <h2>Executive View</h2>
+              <p>Position the framework as a governed delivery system around agentic coding tools, not as a prompt pack.</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="metric-row">
+              <div class="metric">
+                <strong>3 + 1</strong>
+                <span>Agent hosts: Claude, Codex, Copilot in production; Sling as portability proof</span>
+              </div>
+              <div class="metric">
+                <strong>3+</strong>
+                <span>Lifecycle families: story, development, QE, plus PRD</span>
+              </div>
+              <div class="metric">
+                <strong>20</strong>
+                <span>QE workflow phases in the standalone QE run model</span>
+              </div>
+              <div class="metric">
+                <strong>2.3.0 / 2.2.3</strong>
+                <span>Canonical (Claude) vs ported generator versions — active sync debt to close</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <div>
+              <h2>Strategic Positioning</h2>
+              <p>The buying argument is not "AI writes code faster." It is "AI work becomes controlled, measurable, auditable, and reusable across delivery contexts."</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="callout-band">
+              <div>
+                <h3>Recommended offer name</h3>
+                <p><strong>Agentic SDLC Delivery System</strong>: a repeatable operating model for AI-assisted requirements, development, test generation, quality validation, migration, and delivery governance.</p>
+              </div>
+              <div class="note">
+                <strong>Buyer promise:</strong> increase delivery throughput without losing control over quality, evidence, human approval, compliance, or engineering standards.
+              </div>
+            </div>
+
+            <div class="grid cols-3" style="margin-top: 14px;">
+              <div class="card">
+                <h3>What customers think they want</h3>
+                <p>Faster coding, lower cost, fewer handoffs, more automated testing, and less dependency on scarce experts.</p>
+              </div>
+              <div class="card">
+                <h3>What they actually need</h3>
+                <p>Governed workflows, scoped context, quality gates, audit logs, measurable outcomes, secure integrations, and training.</p>
+              </div>
+              <div class="card">
+                <h3>Your wedge</h3>
+                <p>A multi-framework SDLC engine that turns agentic tools into repeatable delivery workflows with evidence and operating discipline.</p>
+              </div>
+            </div>
+
+            <div class="diagram">
+              <p class="dia-title">Where you sit in the value chain</p>
+              <div class="flow">
+                <div class="flow-node">
+                  <b>Raw agent tools</b>
+                  <span>Copilot, Codex, Claude, Cursor generate output</span>
+                </div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-node n-ink">
+                  <b>Your governance layer</b>
+                  <span>Lifecycle phases &middot; scoped context &middot; quality gates &middot; evidence &middot; adapters &middot; upgrades</span>
+                </div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-node n-green">
+                  <b>Governed delivery</b>
+                  <span>Measurable, auditable, repeatable outcomes across repos and domains</span>
+                </div>
+              </div>
+              <p class="dia-cap">The tools on the left are commodities the customer may already own. Your monetizable layer is the middle band that makes their output controlled and reusable.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <div>
+              <h2>Value Thesis</h2>
+              <p>Anchor every commercial conversation on measurable operational outcomes.</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="grid cols-4">
+              <div class="card">
+                <h3>Speed</h3>
+                <p>Reduce elapsed time from story intake to implementation-ready plan, code change, and test evidence.</p>
+                <div class="tag-list">
+                  <span class="tag blue">Cycle time</span>
+                  <span class="tag blue">Lead time</span>
+                </div>
+              </div>
+              <div class="card">
+                <h3>Quality</h3>
+                <p>Increase consistency of acceptance criteria, test plans, blast-radius checks, red-green validation, and QE reports.</p>
+                <div class="tag-list">
+                  <span class="tag green">Defect leakage</span>
+                  <span class="tag green">Rework</span>
+                </div>
+              </div>
+              <div class="card">
+                <h3>Control</h3>
+                <p>Keep human approval, evidence artifacts, tool restrictions, and implementation standards in the normal SDLC path.</p>
+                <div class="tag-list">
+                  <span class="tag amber">Auditability</span>
+                  <span class="tag amber">Governance</span>
+                </div>
+              </div>
+              <div class="card">
+                <h3>Reuse</h3>
+                <p>Reuse workflow engines across teams, repos, frameworks, technologies, and industry-specific delivery patterns.</p>
+                <div class="tag-list">
+                  <span class="tag teal">Domain packs</span>
+                  <span class="tag teal">Upgrade path</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="capabilities" class="panel" role="tabpanel" aria-labelledby="tab-capabilities">
+        <div class="section">
+          <div class="section-header">
+            <div>
+              <h2>Capability Map</h2>
+              <p>Use this to explain the difference between direct agent use and your structured SDLC lifecycle system.</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Lifecycle Area</th>
+                    <th>Current / Near-Current Capability</th>
+                    <th>Customer Benefit</th>
+                    <th>Commercial Hook</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>PRD / Product Discovery</strong></td>
+                    <td>Generate PRD, gather input, synthesize requirements, prepare handoff.</td>
+                    <td>Less ambiguity before engineering starts.</td>
+                    <td>Product-to-engineering acceleration.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Story Refinement</strong></td>
+                    <td>Story draft, engineer analysis, QA assessment, DoR validation, publish artifacts.</td>
+                    <td>Better stories, clearer ACs, reduced back-and-forth.</td>
+                    <td>Backlog readiness factory.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Development</strong></td>
+                    <td>Bug fix, feature enhancement, feature build, SDET router, design, code trace, implementation, verify.</td>
+                    <td>Faster code changes with repeatable quality steps.</td>
+                    <td>AI delivery accelerator.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Developer Testing</strong></td>
+                    <td>Test inventory, test generation, baseline, red-green flow, verify slice, integration, blast-radius checks.</td>
+                    <td>Quality is built into the dev workflow instead of deferred.</td>
+                    <td>Shift-left quality package.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Standalone QE</strong></td>
+                    <td>Validate, intake, ticket gate, discovery, plan, confirm, setup, functional/integration/E2E/NFR execution, analyze, report, publish, learn.</td>
+                    <td>QE gets its own workflow rather than being forced into developer templates.</td>
+                    <td>QE automation and assurance package.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Knowledge Retention</strong></td>
+                    <td>Knowledge base, codebase insights, tool retros, story knowledge, token learnings.</td>
+                    <td>Teams avoid rediscovering project-specific patterns every time.</td>
+                    <td>Institutional memory layer.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Upgrade / Maintenance</strong></td>
+                    <td>Version manifests, stale workflow detection, source sync, backup, local customization detection.</td>
+                    <td>Enterprise-safe updates after rollout.</td>
+                    <td>Managed service annuity.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Measurement</strong></td>
+                    <td>Optional token measurement, phase ledger, final summaries, reduction opportunities.</td>
+                    <td>Visibility into agent cost, context overhead, and optimization.</td>
+                    <td>AI efficiency reporting.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="diagram">
+              <p class="dia-title">Governed SDLC lifecycle &mdash; one continuous chain</p>
+              <div class="flow">
+                <div class="flow-node n-purple"><b>PRD</b><span>Discovery &amp; synthesis</span></div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-node n-amber"><b>Story</b><span>Refine &middot; DoR</span></div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-node n-blue"><b>Development</b><span>Bug / enhance / build</span></div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-node n-blue"><b>Dev testing</b><span>Red-green &middot; blast radius</span></div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-node n-green"><b>QE run</b><span>Functional&rarr;NFR &middot; evidence</span></div>
+              </div>
+              <div class="flow" style="margin-top: 8px;">
+                <div class="flow-node n-teal" style="flex: 1 1 100%;"><b>Cross-cutting: Knowledge retention &middot; Measurement &middot; Versioned upgrade</b><span>Runs alongside every phase so context, cost, and quality evidence persist across the whole lifecycle</span></div>
+              </div>
+              <p class="dia-cap">Direct agent use touches one box at a time. Your system connects them with phase contracts and one artifact per step &mdash; that continuity is the product.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <div>
+              <h2>Workflow Families</h2>
+              <p>Keep development, QE, and story workflows distinct. They serve different users and have different quality semantics.</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="grid cols-3">
+              <div class="card">
+                <h3>Developer Workflows</h3>
+                <p><strong>Owner:</strong> developer or feature team.</p>
+                <p><strong>Intent:</strong> implement safely with red-green testing and verification.</p>
+                <div class="tag-list">
+                  <span class="tag blue">Bug fix</span>
+                  <span class="tag blue">Feature enhance</span>
+                  <span class="tag blue">Feature build</span>
+                </div>
+              </div>
+              <div class="card">
+                <h3>QE Workflow</h3>
+                <p><strong>Owner:</strong> QE engineer or SDET.</p>
+                <p><strong>Intent:</strong> validate product quality across functional, integration, E2E, and non-functional layers.</p>
+                <div class="tag-list">
+                  <span class="tag green">Test rings</span>
+                  <span class="tag green">Evidence</span>
+                  <span class="tag green">Report</span>
+                </div>
+              </div>
+              <div class="card">
+                <h3>Story Workflow</h3>
+                <p><strong>Owner:</strong> BA, PO, engineer, QA.</p>
+                <p><strong>Intent:</strong> make work ready before engineering starts.</p>
+                <div class="tag-list">
+                  <span class="tag amber">Refine</span>
+                  <span class="tag amber">Decompose</span>
+                  <span class="tag amber">Validate DoR</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="questions" class="panel" role="tabpanel" aria-labelledby="tab-questions">
+        <div class="section">
+          <div class="section-header">
+            <div>
+              <h2>Buyer Questions To Prepare For</h2>
+              <p>Use the search box to filter questions by topic: ROI, security, pricing, migration, quality, team, governance, support, or differentiation.</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="search-row">
+              <input id="qaSearch" class="search-input" type="search" placeholder="Search buyer questions and answers">
+            </div>
+            <div class="qa-list" id="qaList">
+              <details class="qa" data-tags="differentiation tools agent codex copilot claude cursor">
+                <summary>Why should we buy this instead of using Copilot, Codex, Claude, or Cursor directly?</summary>
+                <div class="answer">Direct agent tools generate work. This system governs work. It adds lifecycle phases, scoped context, quality gates, evidence artifacts, versioned workflows, upgrade paths, and customer-specific SDLC adaptation. The value is not another coding assistant. The value is controlled AI-assisted delivery.</div>
+              </details>
+              <details class="qa" data-tags="roi metrics value business">
+                <summary>What measurable outcomes should we expect in 30, 60, and 90 days?</summary>
+                <div class="answer">30 days: baseline and first working pilot. 60 days: repeated use on real backlog items with cycle-time and quality evidence. 90 days: scaled workflow adoption, reusable templates, trained users, and a business case based on lead time, rework, test creation time, and defect leakage.</div>
+              </details>
+              <details class="qa" data-tags="quality risk bad code hallucination">
+                <summary>How do you prove quality improves, not just speed?</summary>
+                <div class="answer">Measure pre/post rework, review comments, failed builds, escaped defects, test coverage delta, test quality review, AC traceability, and regression findings. Do not rely on lines of code or prompt acceptance as primary metrics.</div>
+              </details>
+              <details class="qa" data-tags="security data privacy source code training">
+                <summary>What source code or ticket data leaves our environment?</summary>
+                <div class="answer">This depends on the selected agent runtime and enterprise configuration. The implementation must document data flows, model/vendor terms, network policy, code access, logging, and retention. For regulated customers, position a controlled deployment with approved tools, restricted internet access, secret handling, and auditable workflows.</div>
+              </details>
+              <details class="qa" data-tags="security prompt injection">
+                <summary>How do you prevent prompt injection from Jira tickets, docs, or code comments?</summary>
+                <div class="answer">Treat external content as untrusted input. Use explicit instruction hierarchy, retrieval boundaries, least-privilege tool access, human gates for sensitive actions, command allowlists, test evidence, and review steps. Add a prompt-injection test checklist to every enterprise rollout.</div>
+              </details>
+              <details class="qa" data-tags="support maintenance vendor changes upgrade">
+                <summary>What happens when Codex, Copilot, Claude, or another agent changes behavior?</summary>
+                <div class="answer">That is one reason to buy a managed service. The framework should maintain adapters, compatibility tests, versioned generators, upgrade workflows, and regression suites for prompt behavior and generated artifact contracts.</div>
+              </details>
+              <details class="qa" data-tags="pricing commercial">
+                <summary>How do you price it?</summary>
+                <div class="answer">Use a hybrid model: fixed-fee assessment, fixed-fee pilot, managed subscription for ongoing support, and project pricing for migration factories. Avoid pricing only by AI seats because the customer may already have vendor licenses.</div>
+              </details>
+              <details class="qa" data-tags="team operating model training adoption">
+                <summary>Who uses this day to day?</summary>
+                <div class="answer">Developers use dev workflows. QE/SDET uses QE workflows. Product owners and BAs use story and PRD workflows. Architects and tech leads own standards, quality gates, and repo-level guidance. Platform teams maintain shared rollout and upgrade discipline.</div>
+              </details>
+              <details class="qa" data-tags="quality review senior burden">
+                <summary>Will this increase review burden on senior engineers?</summary>
+                <div class="answer">It can if unmanaged. The answer is small-batch workflows, author-side verification, generated evidence, test gates, code trace documents, and explicit reviewer checklists. The system should reduce reviewer ambiguity, not produce larger unchecked changes.</div>
+              </details>
+              <details class="qa" data-tags="messy jira requirements">
+                <summary>Can it handle weak Jira stories?</summary>
+                <div class="answer">Yes, but not by pretending they are ready. The story workflows should identify missing ACs, ambiguity, dependencies, testability gaps, and DoR failures before development starts. This becomes a paid value area: backlog readiness improvement.</div>
+              </details>
+              <details class="qa" data-tags="legacy migration complex codebase">
+                <summary>Our codebase is too complex. Will this work?</summary>
+                <div class="answer">Complex codebases are where workflow discipline matters most. Start with a constrained pilot: one repo, one workflow type, clear test commands, a known service boundary, and senior reviewer involvement. Expand after evidence.</div>
+              </details>
+              <details class="qa" data-tags="test flaky broken environment">
+                <summary>What if our test suite is unreliable?</summary>
+                <div class="answer">Make test reliability part of the readiness assessment. Classify failures as regression, pre-existing, flaky, or environment. Do not sell full automation until baseline test health is known. Offer a test stabilization package if needed.</div>
+              </details>
+              <details class="qa" data-tags="compliance regulated banking healthcare">
+                <summary>How does this work in regulated industries?</summary>
+                <div class="answer">Add policy overlays: audit trail, approval gates, restricted tool access, traceability from requirement to code to test evidence, data handling controls, risk classification, and compliance-specific reporting.</div>
+              </details>
+              <details class="qa" data-tags="ip ownership">
+                <summary>Who owns generated workflows, client customizations, and output artifacts?</summary>
+                <div class="answer">Define this contractually. A clean model is: you retain ownership of core accelerator IP, the client owns their code and generated business artifacts, and custom extensions are licensed or jointly governed depending on engagement terms.</div>
+              </details>
+              <details class="qa" data-tags="headcount job impact">
+                <summary>Is this intended to reduce headcount?</summary>
+                <div class="answer">Position it as capacity expansion and quality improvement, not headcount reduction. The strongest business case is reduced rework, faster delivery, better test coverage, better requirements, and more time for senior judgment.</div>
+              </details>
+              <details class="qa" data-tags="pilot success">
+                <summary>What does a good pilot look like?</summary>
+                <div class="answer">A good pilot uses real work, real repos, real tests, real review, and measured baselines. It should produce accepted changes, useful story artifacts, QE evidence, a clear risk log, and a decision on whether to scale.</div>
+              </details>
+              <details class="qa" data-tags="differentiation prompt platform">
+                <summary>This looks like prompts. Why call it a platform?</summary>
+                <div class="answer">Prompts are one implementation detail. The platform value is in the lifecycle model: generator, state, phase contracts, artifacts, validation, routing, knowledge stores, upgrade paths, agent adapters, metrics, and operating governance.</div>
+              </details>
+              <details class="qa" data-tags="migration modernization">
+                <summary>Can this support migration work?</summary>
+                <div class="answer">Yes, with a migration workflow pack: inventory, dependency map, target architecture, transformation rules, codemods, build fix, test equivalence, data validation, cutover planning, and rollback evidence.</div>
+              </details>
+              <details class="qa" data-tags="customization domain industry">
+                <summary>How much customization is needed per client?</summary>
+                <div class="answer">Expect configuration for repo structure, test commands, CI, Jira fields, domain vocabulary, coding standards, security rules, and approval gates. Productize these as adapters and domain packs so customization decreases over time.</div>
+              </details>
+              <details class="qa" data-tags="support sla managed service">
+                <summary>What support do you provide after rollout?</summary>
+                <div class="answer">Offer managed upgrades, adapter compatibility, issue triage, prompt/workflow tuning, governance reviews, telemetry reporting, and enablement sessions. Define response SLAs by severity.</div>
+              </details>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="team" class="panel" role="tabpanel" aria-labelledby="tab-team">
+        <div class="section">
+          <div class="section-header">
+            <div>
+              <h2>Team Model</h2>
+              <p>Separate the core product/IP team, the Center of Excellence (CoE), and client delivery pods.</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="grid cols-3">
+              <div class="card">
+                <h3>Core IP Team</h3>
+                <ul>
+                  <li>Product owner for roadmap, packages, pricing, and outcomes.</li>
+                  <li>Agent workflow architect for lifecycle design and prompt contracts.</li>
+                  <li>DevTools/platform engineer for installers, doctors, adapters, telemetry, and upgrades.</li>
+                  <li>SDET/QE automation lead for test strategy and quality gates.</li>
+                  <li>AppSec/AI governance lead for data, secrets, audit, and compliance controls.</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h3>Client Delivery Pod</h3>
+                <ul>
+                  <li>Solution architect.</li>
+                  <li>Senior full-stack engineer.</li>
+                  <li>SDET/QE engineer.</li>
+                  <li>BA/product analyst.</li>
+                  <li>Client tech lead and product owner.</li>
+                  <li>Part-time security and platform stakeholders.</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h3>Domain Bench</h3>
+                <ul>
+                  <li>Banking and payments SME.</li>
+                  <li>Healthcare compliance SME.</li>
+                  <li>Retail/ecommerce SME.</li>
+                  <li>Cloud migration architect.</li>
+                  <li>Legacy modernization SME.</li>
+                  <li>Data engineering SME.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="diagram">
+              <p class="dia-title">Operating model &mdash; product core vs. delivery pods</p>
+              <div class="flow" style="flex-direction: column;">
+                <div class="flow-node n-ink"><b>Core IP team</b><span>Owns the engine, adapters, packs, tests, upgrades &mdash; cost scales with product, not headcount</span></div>
+                <span class="flow-arrow" style="transform: rotate(90deg);">&rarr;</span>
+                <div class="flow">
+                  <div class="flow-node n-blue"><b>Client delivery pod A</b><span>Deploys, tunes, enables one account</span></div>
+                  <div class="flow-node n-blue"><b>Client delivery pod B</b><span>Deploys, tunes, enables one account</span></div>
+                  <div class="flow-node n-teal" style="flex:1 1 100%;"><b>Domain bench (shared)</b><span>Fractional SMEs pulled into pods on demand for industry and migration depth</span></div>
+                </div>
+              </div>
+              <p class="dia-cap">The core team is the moat and the fixed cost; pods are the variable, billable delivery capacity. Keep them separate so product investment is not consumed by client work.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <div>
+              <h2>Center of Excellence (CoE) Team</h2>
+              <p>The permanent team that keeps the framework current, captures lessons from engagements, onboards new teams, trains users, and supports adoption.</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="note">
+              <strong>Primary owner:</strong> appoint a Practice Lead (CoE Lead). This person should be more than a delivery manager &mdash; the role needs product thinking, engineering judgment, delivery-process depth, and customer enablement discipline.
+            </div>
+            <div class="table-wrap" style="margin-top: 14px;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Role</th>
+                    <th>What They Maintain</th>
+                    <th>Practical Outputs</th>
+                    <th>Core Skills</th>
+                    <th>AI Skills</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Practice Lead (CoE Lead)</strong></td>
+                    <td>Framework roadmap, release priorities, client feedback, adoption health, and operating cadence.</td>
+                    <td>Quarterly roadmap, release calendar, lessons-learned backlog, adoption dashboard, decision log.</td>
+                    <td>Product &amp; roadmap ownership, stakeholder management, delivery governance, working AI/agentic fluency, adoption and commercial sense.</td>
+                    <td><strong>Awareness.</strong> Agentic feasibility, governance, and token/ROI trade-offs &mdash; enough to steer the roadmap.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Workflow Architect</strong></td>
+                    <td>Workflow logic, phase/stage definitions, routing rules, prompt scope, human approval points, and escalation paths.</td>
+                    <td>Updated workflow templates, phase standards, safe-automation rules, design reviews.</td>
+                    <td>System &amp; workflow design, orchestration and stage modelling, understanding of LLM/agent behavior, API &amp; integration design, setting standards.</td>
+                    <td><strong>Deep.</strong> Agentic workflow &amp; orchestration design, tool calling / MCP, autonomy boundaries, LLM behavior.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>AI Engineer</strong></td>
+                    <td>Prompt quality, instruction hierarchy, context loading, output formats, and error-recovery behavior.</td>
+                    <td>Prompt updates and reviews, reusable instruction patterns, rules that reduce hallucination and ambiguity.</td>
+                    <td>Prompt &amp; instruction design, context management, structured outputs, evaluating model behavior, Python/JavaScript scripting.</td>
+                    <td><strong>Deep.</strong> Prompt &amp; instruction engineering, context engineering / RAG, structured outputs, model-behavior evaluation.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>DevOps / Platform Engineer</strong></td>
+                    <td>Installers, environment checks, tool adapters, local tooling, CI compatibility, and upgrades.</td>
+                    <td>Setup scripts, compatibility fixes, health checks, adapter updates, release automation.</td>
+                    <td>CI/CD, scripting &amp; automation, packaging and installers, containers, cross-OS environments, release engineering.</td>
+                    <td><strong>Working.</strong> MCP &amp; agent-adapter setup, running agent CLIs, token/cost telemetry plumbing.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>QA Automation Engineer</strong></td>
+                    <td>Regression tests for workflow behavior, reference tasks, output quality, and framework validation.</td>
+                    <td>Test harness, smoke tests, sample repos, quality scorecards, release sign-off.</td>
+                    <td>Automation frameworks, regression &amp; evaluation design, quality gates, test data, testing non-deterministic (AI) outputs.</td>
+                    <td><strong>Working&ndash;Deep.</strong> Evaluating AI outputs, golden/reference tasks, testing non-determinism, LLM-as-judge.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Agile Delivery Lead</strong></td>
+                    <td>Story readiness, Definition of Ready/Done, review gates, QA handoff, and release governance.</td>
+                    <td>Delivery playbooks, role maps, story templates, quality-gate definitions.</td>
+                    <td>Agile/SDLC methods, backlog &amp; story quality (Definition of Ready/Done), review gates, facilitation, delivery metrics.</td>
+                    <td><strong>Awareness.</strong> How agents change the SDLC and where human approval gates belong.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Training &amp; Enablement Lead</strong></td>
+                    <td>Onboarding, training, office hours, role-based learning paths, and first-use support.</td>
+                    <td>Training decks, onboarding runbooks, quick-start guides, coaching plans, adoption checklists.</td>
+                    <td>Instructional design, content creation, presentation &amp; communication, onboarding program design, empathy for new users.</td>
+                    <td><strong>Working.</strong> Effective prompting / agent use, and clearly explaining model limits to teams.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Implementation Consultant</strong></td>
+                    <td>Client repo onboarding, workflow configuration, integration fit, and feeding field learnings back into the product.</td>
+                    <td>Implementation plan, repo-fit assessment, configuration PRs, reusable field patterns.</td>
+                    <td>Client onboarding, configuration, integration troubleshooting, requirements translation, adaptability across tech stacks.</td>
+                    <td><strong>Working.</strong> Tuning prompts and context per client, configuring workflows, LLM behavior.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Technical Writer</strong></td>
+                    <td>Documentation, release notes, known issues, FAQs, troubleshooting, examples, and pattern library.</td>
+                    <td>Docs portal, changelog, onboarding guides, decision records, reusable examples.</td>
+                    <td>Clear technical writing, docs tooling (Markdown/portals), information architecture, ability to read code, changelog discipline.</td>
+                    <td><strong>Awareness.</strong> Enough prompt/agent literacy to document AI features accurately.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Security &amp; Compliance Lead</strong></td>
+                    <td>Data flows, secrets policy, prompt-injection controls, tool permissions, audit evidence, and compliance overlays.</td>
+                    <td>Security FAQ, approval matrix, risk register, governance checklist, rollout controls.</td>
+                    <td>Application &amp; AI security, secrets and data governance, threat modelling (incl. prompt injection), compliance frameworks, audit evidence.</td>
+                    <td><strong>Deep.</strong> Prompt-injection defense, data/secret handling, tool permissioning, AI governance &amp; compliance.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Product Analyst</strong></td>
+                    <td>Usage, cycle-time impact, token cost, workflow failure points, support tickets, and adoption signals.</td>
+                    <td>Monthly metrics pack, ROI dashboard, friction report, prioritization inputs.</td>
+                    <td>Analytics &amp; SQL, dashboards, metric definition, cost/usage analysis, turning signals into clear recommendations.</td>
+                    <td><strong>Working.</strong> Token-cost analysis and AI-impact / adoption metrics.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Subject Matter Experts (SMEs)</strong></td>
+                    <td>Stack-specific and industry-specific packs for Java, .NET, React, data, banking, healthcare, retail, and migration.</td>
+                    <td>Tech packs, industry overlays, compliance templates, edge-case libraries.</td>
+                    <td>Domain depth, encoding expertise into reusable packs and patterns, advisory skills, domain-specific compliance knowledge.</td>
+                    <td><strong>Awareness.</strong> Prompt-pattern literacy to encode domain knowledge into reusable packs.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="grid cols-3" style="margin-top: 14px;">
+              <div class="card">
+                <h3>Run Cadence</h3>
+                <ul>
+                  <li>Weekly engagement learning review.</li>
+                  <li>Biweekly framework backlog triage.</li>
+                  <li>Monthly framework release or patch window.</li>
+                  <li>Monthly enablement and office-hours cycle.</li>
+                  <li>Quarterly roadmap and customer advisory review.</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h3>Inputs To Capture</h3>
+                <ul>
+                  <li>Where workflows failed or needed human rescue.</li>
+                  <li>Common client customization patterns.</li>
+                  <li>Model/tool behavior changes.</li>
+                  <li>Repeated security or compliance objections.</li>
+                  <li>Training questions from new users.</li>
+                  <li>Metrics that prove or disprove value.</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h3>Outputs To Keep Current</h3>
+                <ul>
+                  <li>Framework version and changelog.</li>
+                  <li>Agent adapter compatibility matrix.</li>
+                  <li>Onboarding and training materials.</li>
+                  <li>Golden-path demo repos.</li>
+                  <li>Security and governance pack.</li>
+                  <li>Known issues and support runbook.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <div>
+              <h2>Background &amp; Skills by Role</h2>
+              <p>Who fits each CoE role &mdash; the typical background to hire for and the core skills that matter. Several roles can start part-time or be combined in one person, then split as adoption grows.</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Role</th>
+                    <th>Typical Background</th>
+                    <th>Core Skills</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Practice Lead (CoE Lead)</strong></td>
+                    <td>8+ yrs in software delivery; former engineering lead, delivery manager, or product owner who has owned outcomes and budgets.</td>
+                    <td>Product &amp; roadmap ownership, stakeholder management, delivery governance, working AI/agentic fluency, adoption and commercial sense.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Workflow Architect</strong></td>
+                    <td>Senior or staff engineer / solution architect, 7+ yrs, with automation or process-design experience.</td>
+                    <td>System &amp; workflow design, orchestration and stage modelling, understanding of LLM/agent behavior, API &amp; integration design, setting standards.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>AI Engineer</strong></td>
+                    <td>Software or ML engineer, 3+ yrs, who has shipped LLM-based features.</td>
+                    <td>Prompt &amp; instruction design, context management, structured outputs, evaluating model behavior, Python/JavaScript scripting.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>DevOps / Platform Engineer</strong></td>
+                    <td>5+ yrs in DevOps, platform, or build engineering.</td>
+                    <td>CI/CD, scripting &amp; automation, packaging and installers, containers, cross-OS environments, release engineering.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>QA Automation Engineer</strong></td>
+                    <td>4+ yrs as SDET or test-automation engineer.</td>
+                    <td>Automation frameworks, regression &amp; evaluation design, quality gates, test data, testing non-deterministic (AI) outputs.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Agile Delivery Lead</strong></td>
+                    <td>5+ yrs as delivery lead, scrum master, agile coach, or engineering manager.</td>
+                    <td>Agile/SDLC methods, backlog &amp; story quality (Definition of Ready/Done), review gates, facilitation, delivery metrics.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Training &amp; Enablement Lead</strong></td>
+                    <td>4+ yrs in enablement, customer success, technical training, or developer advocacy.</td>
+                    <td>Instructional design, content creation, presentation &amp; communication, onboarding program design, empathy for new users.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Implementation Consultant</strong></td>
+                    <td>5+ yrs in consulting or client-facing delivery with hands-on engineering.</td>
+                    <td>Client onboarding, configuration, integration troubleshooting, requirements translation, adaptability across tech stacks.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Technical Writer</strong></td>
+                    <td>3+ yrs writing documentation for developer tools or platforms.</td>
+                    <td>Clear technical writing, docs tooling (Markdown/portals), information architecture, ability to read code, changelog discipline.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Security &amp; Compliance Lead</strong></td>
+                    <td>6+ yrs in application security, security engineering, or governance/risk/compliance (GRC).</td>
+                    <td>Application &amp; AI security, secrets and data governance, threat modelling (incl. prompt injection), compliance frameworks, audit evidence.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Product Analyst</strong></td>
+                    <td>3+ yrs in data, product, or business-intelligence analysis.</td>
+                    <td>Analytics &amp; SQL, dashboards, metric definition, cost/usage analysis, turning signals into clear recommendations.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Subject Matter Experts (SMEs)</strong></td>
+                    <td>8+ yrs of deep expertise in a stack (Java, .NET, React, data) or an industry (banking, healthcare, retail) or in migrations.</td>
+                    <td>Domain depth, encoding expertise into reusable packs and patterns, advisory skills, domain-specific compliance knowledge.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <div>
+              <h2>Roles And Responsibilities</h2>
+              <p>Make ownership explicit before pilots. Otherwise AI workflows become side experiments.</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Role</th>
+                    <th>Owns</th>
+                    <th>Must Be Ready To Answer</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Executive Sponsor</strong></td>
+                    <td>Business case, budget, adoption mandate.</td>
+                    <td>Why this matters now and what outcome justifies investment.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Engineering Leader</strong></td>
+                    <td>Workflow fit, delivery metrics, reviewer experience.</td>
+                    <td>How quality and senior engineer load will be protected.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Platform Lead</strong></td>
+                    <td>Tooling, CI/CD, runtime setup, access, upgrades.</td>
+                    <td>How it runs safely inside developer environments.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Security Lead</strong></td>
+                    <td>Data flows, secrets, command policy, compliance evidence.</td>
+                    <td>What agent can access, emit, and change.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Product / BA Lead</strong></td>
+                    <td>Story quality, ACs, backlog readiness, prioritization.</td>
+                    <td>How weak requirements become engineering-ready work.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>QE Lead</strong></td>
+                    <td>Test strategy, evidence, flakiness, automation feasibility.</td>
+                    <td>How generated tests are reviewed and trusted.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="estimator" class="panel" role="tabpanel" aria-labelledby="tab-estimator">
+        <div class="section">
+          <div class="section-header">
+            <div>
+              <h2>Worked Example &mdash; Java Project Sizing</h2>
+              <p>A concrete, defensible way to size and price a build using the tooling. Numbers are illustrative &mdash; calibrate rates and token prices to your market, but keep the method transparent so the offer is credible.</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="callout-band">
+              <div>
+                <h3>Reference project</h3>
+                <p><strong>Loan Origination Service</strong> &mdash; Java 17 / Spring Boot 3 microservice, REST APIs, PostgreSQL, integrations with two external systems (bureau + payments), plus non-functional requirements (security, performance, audit).</p>
+              </div>
+              <div class="note">
+                <strong>Scope:</strong> 6 epics, ~80 user stories (30 simple, 35 medium, 15 complex), full test coverage, CI/CD pipeline, and evidence artifacts for a regulated lender.
+              </div>
+            </div>
+
+            <div class="diagram">
+              <p class="dia-title">Sizing method &mdash; effort by SDLC phase (person-hours)</p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Phase</th>
+                      <th>Traditional</th>
+                      <th>Vibe coding</th>
+                      <th>Agentic tooling</th>
+                      <th>Why it changes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><strong>Story refinement</strong></td><td>240</td><td>228</td><td>108</td><td>Story workflows auto-refine, flag gaps, validate DoR.</td></tr>
+                    <tr><td><strong>Development</strong></td><td>900</td><td>495</td><td>360</td><td>LLM speeds coding; framework adds structure and reuse.</td></tr>
+                    <tr><td><strong>Testing / QE</strong></td><td>420</td><td>357</td><td>126</td><td>Automated test generation and QE run workflows.</td></tr>
+                    <tr><td><strong>Code review</strong></td><td>160</td><td>184</td><td>96</td><td>Vibe raises review load; evidence artifacts lower it.</td></tr>
+                    <tr><td><strong>Rework / defects</strong></td><td>280</td><td>350</td><td>126</td><td>Ungoverned AI increases rework; gates reduce it.</td></tr>
+                    <tr><td><strong>PM / overhead</strong></td><td>200</td><td>200</td><td>140</td><td>Workflow status reduces coordination overhead.</td></tr>
+                    <tr style="background:#f8fafc;"><td><strong>Total effort</strong></td><td><strong>2,200</strong></td><td><strong>1,814</strong></td><td><strong>956</strong></td><td><strong>Agentic &asymp; 57% less effort than traditional.</strong></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="dia-cap">Note the two directions: vibe coding speeds development but <em>increases</em> review and rework because output is ungoverned. The agentic framework cuts effort <em>and</em> lowers rework because quality is built into the workflow.</p>
+            </div>
+            <div class="note" style="margin-top: 14px;">
+              <strong>How these numbers are derived:</strong>
+              <ul>
+                <li><strong>Effort (person-hours)</strong> &mdash; from the phase table above: each SDLC phase is estimated for the reference project and summed. Agentic totals ~57% less than traditional because refinement, testing, and rework shrink the most.</li>
+                <li><strong>Token usage (millions)</strong> &mdash; Traditional = 0 (no AI tooling). Vibe &asymp; 100M (ad-hoc LLM help during development only). Agentic &asymp; 250M (agents work across the whole lifecycle &mdash; refinement, code, tests, review &mdash; so they use more tokens while replacing person-hours).</li>
+                <li><strong>Timeline (weeks)</strong> &mdash; calendar time for a small delivery pod at a steady throughput (~90 productive person-hours per week), so the schedule shortens as effort falls: 24 &rarr; 20 &rarr; 11 weeks.</li>
+              </ul>
+              All values are illustrative planning baselines for this reference project. Recalibrate the labor rate, token price, license, and team size in the calculator below to fit your market.
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <div>
+              <h2>Interactive Cost &amp; Margin Calculator</h2>
+              <p>Adjust the loaded labor rate, blended token price, and target margin. Everything below recomputes live &mdash; including your price, your profit, and what the customer saves versus traditional delivery.</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="calc-panel">
+              <div class="calc-field">
+                <label for="est-rate">Loaded labor rate ($ / hour)</label>
+                <input type="number" id="est-rate" value="70" min="10" max="500" step="5">
+              </div>
+              <div class="calc-field">
+                <label for="est-token">Blended token price ($ / 1M tokens)</label>
+                <input type="number" id="est-token" value="10" min="0" max="100" step="1">
+              </div>
+              <div class="calc-field">
+                <label for="est-license">Tool license ($ / developer-month)</label>
+                <input type="number" id="est-license" value="40" min="0" max="500" step="5">
+              </div>
+              <div class="calc-field">
+                <label for="est-team">Team size (developers)</label>
+                <input type="number" id="est-team" value="6" min="1" max="100" step="1">
+              </div>
+              <div class="calc-field">
+                <label for="est-margin">Target margin: <span class="rangeval" id="est-margin-val">40%</span></label>
+                <input type="range" id="est-margin" value="40" min="20" max="65" step="5">
+              </div>
+            </div>
+
+            <div class="metric-row" style="margin-top: 18px;">
+              <div class="metric">
+                <strong id="est-cost">&mdash;</strong>
+                <span>Your delivery cost (agentic)</span>
+              </div>
+              <div class="metric hero">
+                <strong id="est-price">&mdash;</strong>
+                <span>Your price to customer at target margin</span>
+              </div>
+              <div class="metric hero">
+                <strong id="est-profit">&mdash;</strong>
+                <span>Your gross profit on the deal</span>
+              </div>
+              <div class="metric">
+                <strong id="est-savings">&mdash;</strong>
+                <span>Customer saves vs traditional (<span id="est-savings-pct">&mdash;</span>)</span>
+              </div>
+            </div>
+
+            <div class="diagram">
+              <p class="dia-title">Delivery mode comparison at current settings</p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Delivery mode</th>
+                      <th>Effort</th>
+                      <th>Timeline</th>
+                      <th>Labor cost</th>
+                      <th>Token cost</th>
+                      <th>License cost</th>
+                      <th>Total cost</th>
+                      <th>Price @ margin</th>
+                      <th>Quality</th>
+                    </tr>
+                  </thead>
+                  <tbody id="est-table-body"></tbody>
+                </table>
+              </div>
+              <p class="dia-cap">Token and tool-license costs are small next to labor &mdash; even though the agentic mode uses the most tokens and pays for seats, its total cost is far lower because it consumes far fewer person-hours (and fewer months of licenses). Keep the pricing conversation on labor and timeline, not tokens or licenses.</p>
+            </div>
+            <div class="note" style="margin-top: 14px;">
+              <strong>How license cost is calculated:</strong> license = tool license ($ / developer-month) &times; team size &times; months, where months = that mode&rsquo;s timeline (weeks &divide; 4.345). It applies only to modes that use the agent tooling (vibe and agentic); traditional is $0. At the defaults ($40 / dev-month, 6 developers): agentic = 40 &times; 6 &times; (11 wks &asymp; 2.5 mo) &asymp; $608; vibe (20 wks) &asymp; $1,105. Longer projects pay for more months of seats, so faster agentic delivery also lowers licensing. Adjust the license rate and team size inputs to match your actual tooling.
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <div>
+              <h2>Margin Sensitivity</h2>
+              <p>Move the margin slider above, or read this table directly: it shows your price, profit, and the customer's saving at each margin level. The row matching your current slider setting is highlighted.</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Target margin</th>
+                    <th>Your price (agentic)</th>
+                    <th>Your gross profit</th>
+                    <th>Customer saving vs traditional</th>
+                  </tr>
+                </thead>
+                <tbody id="est-sens-body"></tbody>
+              </table>
+            </div>
+            <div class="note" style="margin-top: 14px;">
+              <strong>The compelling-offer logic:</strong> because your internal effort is roughly half of traditional, you can price well below a traditional vendor <em>and</em> still hold a strong margin. The customer sees a lower price and governed quality; you keep healthy profit and a reusable asset. Raise the margin and you still undercut traditional &mdash; that headroom is the whole point.
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <div>
+              <h2>Assumptions &amp; Calibration</h2>
+              <p>State these in any proposal so the estimate is auditable and defensible.</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="grid cols-3">
+              <div class="card">
+                <h3>Effort model</h3>
+                <p>Phase hours derived from the 80-story scope and complexity mix. Agentic multipliers reflect measured acceleration from story, dev, and QE workflows plus reduced rework.</p>
+              </div>
+              <div class="card">
+                <h3>Token model</h3>
+                <p>Agentic uses ~250M blended tokens (multi-phase workflows re-read context); vibe ~100M; traditional none. Blended price assumes model mix plus prompt caching &mdash; tune the input to your actual runtime.</p>
+              </div>
+              <div class="card">
+                <h3>What to calibrate per deal</h3>
+                <p>Labor rate by region and seniority, token price by chosen models, complexity mix, and whether the customer owns their model license (then token cost is theirs, not yours).</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+    const panels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
+
+    function setActiveTab(tab) {
+      tabs.forEach((item) => {
+        const selected = item === tab;
+        item.setAttribute('aria-selected', String(selected));
+        item.tabIndex = selected ? 0 : -1;
+      });
+      panels.forEach((panel) => {
+        panel.classList.toggle('active', panel.id === tab.getAttribute('aria-controls'));
+      });
+      history.replaceState(null, '', '#' + tab.getAttribute('aria-controls'));
+    }
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => setActiveTab(tab));
+      tab.addEventListener('keydown', (event) => {
+        const current = tabs.indexOf(tab);
+        let next = current;
+        if (event.key === 'ArrowRight') next = (current + 1) % tabs.length;
+        if (event.key === 'ArrowLeft') next = (current - 1 + tabs.length) % tabs.length;
+        if (event.key === 'Home') next = 0;
+        if (event.key === 'End') next = tabs.length - 1;
+        if (next !== current) {
+          event.preventDefault();
+          tabs[next].focus();
+          setActiveTab(tabs[next]);
+        }
+      });
+      if (index !== 0) tab.tabIndex = -1;
+    });
+
+    const initialHash = window.location.hash.replace('#', '');
+    if (initialHash) {
+      const initialTab = tabs.find((tab) => tab.getAttribute('aria-controls') === initialHash);
+      if (initialTab) setActiveTab(initialTab);
+    }
+
+    const qaSearch = document.getElementById('qaSearch');
+    const qaItems = Array.from(document.querySelectorAll('details.qa'));
+    qaSearch?.addEventListener('input', () => {
+      const query = qaSearch.value.trim().toLowerCase();
+      qaItems.forEach((item) => {
+        const text = item.innerText.toLowerCase() + ' ' + (item.dataset.tags || '');
+        item.style.display = text.includes(query) ? '' : 'none';
+      });
+    });
+
+    document.getElementById('expandQa')?.addEventListener('click', () => {
+      const targetTab = document.getElementById('tab-questions');
+      setActiveTab(targetTab);
+      const allOpen = qaItems.every((item) => item.open);
+      qaItems.forEach((item) => {
+        item.open = !allOpen;
+      });
+      document.getElementById('expandQa').textContent = allOpen ? 'Expand Q&A' : 'Collapse Q&A';
+    });
+  </script>
+
+  <script>
+    (function () {
+      const MODES = [
+        { key: 'trad', name: 'Traditional', sub: 'No agentic tooling', hours: 2200, tokensM: 0, weeks: 24, quality: 'Baseline' },
+        { key: 'vibe', name: 'Vibe coding', sub: 'Ad-hoc LLM, no framework', hours: 1814, tokensM: 100, weeks: 20, quality: 'Variable / ungoverned' },
+        { key: 'agentic', name: 'Agentic SDLC tooling', sub: 'This framework', hours: 956, tokensM: 250, weeks: 11, quality: 'Governed + evidence' }
+      ];
+
+      const byId = (id) => document.getElementById(id);
+      const rateEl = byId('est-rate');
+      const tokenEl = byId('est-token');
+      const licenseEl = byId('est-license');
+      const teamEl = byId('est-team');
+      const marginEl = byId('est-margin');
+      if (!rateEl || !tokenEl || !licenseEl || !teamEl || !marginEl) return;
+
+      const WEEKS_PER_MONTH = 4.345;
+      const money = (n) => '$' + Math.round(n).toLocaleString('en-US');
+      const priceAt = (cost, marginPct) => marginPct >= 100 ? cost : cost / (1 - marginPct / 100);
+
+      function costs(rate, tokenPrice, seatMonthly, team) {
+        return MODES.map((m) => {
+          const labor = m.hours * rate;
+          const token = m.tokensM * tokenPrice;
+          // License applies only to modes that use the agent tooling (tokensM > 0),
+          // scaled by team size and that mode's own timeline (weeks -> months).
+          const license = m.tokensM > 0 ? seatMonthly * team * (m.weeks / WEEKS_PER_MONTH) : 0;
+          return Object.assign({}, m, { labor: labor, token: token, license: license, cost: labor + token + license });
+        });
+      }
+
+      function render() {
+        const rate = parseFloat(rateEl.value) || 0;
+        const tokenPrice = parseFloat(tokenEl.value) || 0;
+        const seatMonthly = parseFloat(licenseEl.value) || 0;
+        const team = parseFloat(teamEl.value) || 0;
+        const margin = parseFloat(marginEl.value) || 0;
+        byId('est-margin-val').textContent = margin + '%';
+
+        const rows = costs(rate, tokenPrice, seatMonthly, team);
+        const trad = rows.find((r) => r.key === 'trad');
+        const agentic = rows.find((r) => r.key === 'agentic');
+        const tradPrice = priceAt(trad.cost, margin);
+        const agPrice = priceAt(agentic.cost, margin);
+        const agProfit = agPrice - agentic.cost;
+        const saving = tradPrice - agPrice;
+        const savingPct = tradPrice ? Math.round((saving / tradPrice) * 100) : 0;
+
+        byId('est-cost').textContent = money(agentic.cost);
+        byId('est-price').textContent = money(agPrice);
+        byId('est-profit').textContent = money(agProfit);
+        byId('est-savings').textContent = money(saving);
+        byId('est-savings-pct').textContent = savingPct + '% vs traditional';
+
+        byId('est-table-body').innerHTML = rows.map((r) => {
+          const price = priceAt(r.cost, margin);
+          const highlight = r.key === 'agentic' ? ' style="background:#f0fdf4;"' : '';
+          return '<tr' + highlight + '>'
+            + '<td><strong>' + r.name + '</strong><br><small style="color:var(--muted)">' + r.sub + '</small></td>'
+            + '<td>' + r.hours.toLocaleString('en-US') + ' hrs</td>'
+            + '<td>' + r.weeks + ' wks</td>'
+            + '<td>' + money(r.labor) + '</td>'
+            + '<td>' + money(r.token) + '</td>'
+            + '<td>' + money(r.license) + '</td>'
+            + '<td><strong>' + money(r.cost) + '</strong></td>'
+            + '<td>' + money(price) + '</td>'
+            + '<td>' + r.quality + '</td>'
+            + '</tr>';
+        }).join('');
+
+        const levels = [30, 40, 50, 60];
+        byId('est-sens-body').innerHTML = levels.map((mg) => {
+          const p = priceAt(agentic.cost, mg);
+          const profit = p - agentic.cost;
+          const sv = priceAt(trad.cost, mg) - p;
+          const active = mg === Math.round(margin) ? ' style="background:#f0fdf4;"' : '';
+          return '<tr' + active + '>'
+            + '<td><strong>' + mg + '%</strong></td>'
+            + '<td>' + money(p) + '</td>'
+            + '<td>' + money(profit) + '</td>'
+            + '<td>' + money(sv) + '</td>'
+            + '</tr>';
+        }).join('');
+      }
+
+      [rateEl, tokenEl, licenseEl, teamEl, marginEl].forEach((el) => el.addEventListener('input', render));
+      render();
+    })();
+  </script>
+</body>
+</html>
