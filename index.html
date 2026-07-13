@@ -849,6 +849,7 @@
       }
 
       .tabs,
+      .tabs-bar,
       .actions,
       .search-row {
         display: none;
@@ -887,6 +888,150 @@
       .section-header h2 { font-size: 16px; }
       .metric strong, #est-cost, #est-price, #est-profit, #est-savings { font-size: 20px; }
     }
+
+    /* ===== Fluid & tactile refinements (mobile polish) ===== */
+    html { scroll-behavior: smooth; }
+    * { -webkit-tap-highlight-color: transparent; }
+
+    /* Three-row shell so the sticky nav row doesn't stretch */
+    .app-shell { grid-template-rows: auto auto 1fr; }
+
+    /* Sticky, always-available section navigation */
+    .tabs-bar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: var(--nav);
+      border-bottom: 1px solid #000;
+    }
+
+    .tabs-inner {
+      position: relative;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 10px 24px;
+    }
+
+    .brand-row { margin-bottom: 0; }
+
+    /* Smooth, tactile controls */
+    .tab,
+    .action-btn {
+      transition: background-color .18s ease, border-color .18s ease, color .18s ease, transform .06s ease;
+    }
+
+    .tab:active,
+    .action-btn:active { transform: translateY(1px); }
+
+    .tab[aria-selected="true"] { box-shadow: 0 2px 10px rgba(0, 0, 0, .25); }
+
+    /* Clear keyboard focus */
+    .tab:focus-visible,
+    .action-btn:focus-visible,
+    .search-input:focus-visible,
+    details.qa summary:focus-visible,
+    input:focus-visible {
+      outline: 2px solid #60a5fa;
+      outline-offset: 2px;
+    }
+
+    /* Cards & metrics respond to touch/hover */
+    .card,
+    .metric,
+    .phase,
+    .flow-node,
+    .stack-layer {
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+    }
+
+    @media (hover: hover) {
+      .card:hover,
+      .phase:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 22px rgba(17, 24, 39, .10);
+        border-color: #c2ccdb;
+      }
+    }
+
+    /* Panels ease in instead of snapping */
+    .panel.active { animation: panelIn .28s ease both; }
+
+    @keyframes panelIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Q&A: custom animated chevron, smoother rows */
+    details.qa summary {
+      list-style: none;
+      position: relative;
+      padding-right: 42px;
+      transition: background-color .16s ease;
+    }
+
+    details.qa summary::-webkit-details-marker { display: none; }
+
+    details.qa summary::after {
+      content: "";
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      width: 8px;
+      height: 8px;
+      margin-top: -6px;
+      border-right: 2px solid #64748b;
+      border-bottom: 2px solid #64748b;
+      transform: rotate(45deg);
+      transition: transform .2s ease;
+    }
+
+    details.qa[open] summary::after {
+      transform: rotate(-135deg);
+      margin-top: -2px;
+    }
+
+    @media (hover: hover) {
+      details.qa summary:hover { background: #f2f6fc; }
+    }
+
+    /* Horizontal-scroll affordance for wide tables */
+    .table-wrap {
+      background:
+        linear-gradient(to right, #fff 30%, rgba(255, 255, 255, 0)) 0 0 / 32px 100% no-repeat,
+        linear-gradient(to left, #fff 30%, rgba(255, 255, 255, 0)) 100% 0 / 32px 100% no-repeat,
+        radial-gradient(farthest-side at 0 50%, rgba(17, 24, 39, .12), rgba(0, 0, 0, 0)) 0 0 / 14px 100% no-repeat,
+        radial-gradient(farthest-side at 100% 50%, rgba(17, 24, 39, .12), rgba(0, 0, 0, 0)) 100% 0 / 14px 100% no-repeat;
+      background-attachment: local, local, scroll, scroll;
+    }
+
+    /* Fade hint that the section tabs scroll on small screens */
+    @media (max-width: 720px) {
+      .tabs-inner { padding: 8px 14px; }
+
+      .tabs-inner::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 28px;
+        height: 100%;
+        background: linear-gradient(to right, rgba(17, 24, 39, 0), var(--nav));
+        pointer-events: none;
+      }
+    }
+
+    /* Breathing room under the sticky bar */
+    .panel { scroll-margin-top: 68px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+
+      *,
+      .panel.active {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -904,6 +1049,11 @@
             <button class="action-btn" type="button" id="expandQa">Expand Q&amp;A</button>
           </div>
         </div>
+      </div>
+    </header>
+
+    <div class="tabs-bar">
+      <div class="tabs-inner">
         <nav class="tabs" role="tablist" aria-label="Offering strategy sections">
           <button class="tab" role="tab" aria-selected="true" aria-controls="overview" id="tab-overview">Overview</button>
           <button class="tab" role="tab" aria-selected="false" aria-controls="capabilities" id="tab-capabilities">Capabilities</button>
@@ -912,7 +1062,7 @@
           <button class="tab" role="tab" aria-selected="false" aria-controls="estimator" id="tab-estimator">Estimator</button>
         </nav>
       </div>
-    </header>
+    </div>
 
     <main class="main">
       <section id="overview" class="panel active" role="tabpanel" aria-labelledby="tab-overview">
@@ -1836,8 +1986,18 @@
       history.replaceState(null, '', '#' + tab.getAttribute('aria-controls'));
     }
 
+    const tabsBar = document.querySelector('.tabs-bar');
+    function scrollToNav() {
+      if (tabsBar && window.scrollY > tabsBar.offsetTop) {
+        window.scrollTo({ top: tabsBar.offsetTop, behavior: 'smooth' });
+      }
+    }
+
     tabs.forEach((tab, index) => {
-      tab.addEventListener('click', () => setActiveTab(tab));
+      tab.addEventListener('click', () => {
+        setActiveTab(tab);
+        scrollToNav();
+      });
       tab.addEventListener('keydown', (event) => {
         const current = tabs.indexOf(tab);
         let next = current;
@@ -1873,6 +2033,7 @@
     document.getElementById('expandQa')?.addEventListener('click', () => {
       const targetTab = document.getElementById('tab-questions');
       setActiveTab(targetTab);
+      scrollToNav();
       const allOpen = qaItems.every((item) => item.open);
       qaItems.forEach((item) => {
         item.open = !allOpen;

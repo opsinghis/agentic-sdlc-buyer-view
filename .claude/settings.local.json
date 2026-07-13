@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless --disable-gpu --hide-scrollbars --window-size=390,1400 --screenshot=/private/tmp/claude-502/-Users-omsingh0-code-agentic-sdlc-buyer-view/a119fc7c-6483-4671-8f59-18290e3f2765/scratchpad/mobile.png file:///Users/omsingh0/code/agentic-sdlc-buyer-view/index.html)",
+      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless --disable-gpu --hide-scrollbars --window-size=1280,1000 --screenshot=/private/tmp/claude-502/-Users-omsingh0-code-agentic-sdlc-buyer-view/a119fc7c-6483-4671-8f59-18290e3f2765/scratchpad/desktop.png file:///Users/omsingh0/code/agentic-sdlc-buyer-view/index.html)",
+      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless --disable-gpu --hide-scrollbars --virtual-time-budget=1200 --window-size=390,1500 --screenshot=/private/tmp/claude-502/-Users-omsingh0-code-agentic-sdlc-buyer-view/a119fc7c-6483-4671-8f59-18290e3f2765/scratchpad/mobile2.png file:///Users/omsingh0/code/agentic-sdlc-buyer-view/index.html)",
+      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless --disable-gpu --hide-scrollbars --virtual-time-budget=1200 --window-size=1280,1400 --screenshot=/private/tmp/claude-502/-Users-omsingh0-code-agentic-sdlc-buyer-view/a119fc7c-6483-4671-8f59-18290e3f2765/scratchpad/desktop2.png file:///Users/omsingh0/code/agentic-sdlc-buyer-view/index.html)",
+      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless --disable-gpu --hide-scrollbars --virtual-time-budget=1200 --window-size=390,1200 --screenshot=/private/tmp/claude-502/-Users-omsingh0-code-agentic-sdlc-buyer-view/a119fc7c-6483-4671-8f59-18290e3f2765/scratchpad/mobile-cap.png 'file:///Users/omsingh0/code/agentic-sdlc-buyer-view/index.html#capabilities')"
+    ]
+  }
+}
